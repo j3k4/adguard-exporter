@@ -12,7 +12,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/csfreak/adguard-exporter/internal/metrics"
+	"github.com/j3k4/adguard-exporter/internal/metrics"
 	"github.com/mitchellh/mapstructure"
 )
 

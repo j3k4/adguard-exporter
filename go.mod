@@ -1,4 +1,4 @@
-module github.com/csfreak/adguard-exporter
+module github.com/j3k4/adguard-exporter
 
 go 1.21
 
