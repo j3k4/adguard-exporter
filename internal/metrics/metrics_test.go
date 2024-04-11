@@ -1,26 +1,17 @@
 package metrics
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/prometheus/client_golang/prometheus"
 )
 
-// TestInit überprüft die Initialisierung der Prometheus-Metriken
+// TestInit tests the initialization of Prometheus metrics
 func TestInit(t *testing.T) {
-	// Mock-Logausgabe
-	logOutput := make(chan string, 12)
-	log := &testLogger{c: logOutput}
-
-	// Ersetze den originalen Logger durch den Mock-Logger
-	originalLogger := log
-	defer func() { log = originalLogger }()
-
-	// Rufe Init-Funktion auf
+	// Call Init function
 	Init()
 
-	// Erwartete Metriken
+	// Check if all metrics have been registered
 	expectedMetrics := []string{
 		"avg_processing_time",
 		"num_dns_queries",
@@ -36,25 +27,17 @@ func TestInit(t *testing.T) {
 		"protection_enabled",
 	}
 
-	// Überprüfe, ob alle erwarteten Metriken registriert wurden
+	// Check if all expected metrics are registered
 	for _, metricName := range expectedMetrics {
-		if !isMetricRegistered(metricName) {
+		if !isMetricRegistered() {
 			t.Errorf("Expected metric %s to be registered, but it wasn't", metricName)
 		}
 	}
 }
 
-// testLogger ist eine Mock-Implementierung von log.Logger für Testzwecke
-type testLogger struct {
-	c chan string
-}
-
-func (l *testLogger) Printf(format string, v ...interface{}) {
-	l.c <- fmt.Sprintf(format, v...)
-}
-
-// isMetricRegistered überprüft, ob eine Metrik registriert ist
-func isMetricRegistered(metricName string) bool {
+// isMetricRegistered checks if a metric is registered
+func isMetricRegistered() bool {
+	// Try to collect the metric
 	_, err := prometheus.DefaultGatherer.Gather()
 	return err == nil
 }
