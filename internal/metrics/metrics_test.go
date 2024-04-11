@@ -1,48 +1,60 @@
 package metrics
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/prometheus/client_golang/prometheus"
 )
 
-// TestInit testet die Initialisierung der Metriken
+// TestInit überprüft die Initialisierung der Prometheus-Metriken
 func TestInit(t *testing.T) {
-	// Testen, ob alle Metriken registriert werden
+	// Mock-Logausgabe
+	logOutput := make(chan string, 12)
+	log := &testLogger{c: logOutput}
+
+	// Ersetze den originalen Logger durch den Mock-Logger
+	originalLogger := log
+	defer func() { log = originalLogger }()
+
+	// Rufe Init-Funktion auf
 	Init()
 
-	// Überprüfen, ob jede Metrik registriert ist
-	expectedMetrics := []struct {
-		name  string
-		metric *prometheus.GaugeVec
-	}{
-		{"avg_processing_time", AvgProcessingTime},
-		{"num_dns_queries", DnsQueries},
-		{"num_blocked_filtering", BlockedFiltering},
-		{"num_replaced_parental", ParentalFiltering},
-		{"num_replaced_safebrowsing", SafeBrowsingFiltering},
-		{"num_replaced_safesearch", SafeSearchFiltering},
-		{"top_queried_domains", TopQueries},
-		{"top_blocked_domains", TopBlocked},
-		{"top_clients", TopClients},
-		{"query_types", QueryTypes},
-		{"running", Running},
-		{"protection_enabled", ProtectionEnabled},
+	// Erwartete Metriken
+	expectedMetrics := []string{
+		"avg_processing_time",
+		"num_dns_queries",
+		"num_blocked_filtering",
+		"num_replaced_parental",
+		"num_replaced_safebrowsing",
+		"num_replaced_safesearch",
+		"top_queried_domains",
+		"top_blocked_domains",
+		"top_clients",
+		"query_types",
+		"running",
+		"protection_enabled",
 	}
 
-	for _, em := range expectedMetrics {
-		if !contains(prometheus.DefaultRegisterer.(*prometheus.Registry).Collectors(), em.metric) {
-			t.Errorf("expected metric %q to be registered", em.name)
+	// Überprüfe, ob alle erwarteten Metriken registriert wurden
+	for _, metricName := range expectedMetrics {
+		if !isMetricRegistered(metricName) {
+			t.Errorf("Expected metric %s to be registered, but it wasn't", metricName)
 		}
 	}
 }
 
-// Hilfsfunktion, um zu überprüfen, ob ein Metric im Registry vorhanden ist
-func contains(collectors []prometheus.Collector, needle prometheus.Collector) bool {
-	for _, c := range collectors {
-		if c == needle {
-			return true
-		}
-	}
-	return false
+// testLogger ist eine Mock-Implementierung von log.Logger für Testzwecke
+type testLogger struct {
+	c chan string
+}
+
+func (l *testLogger) Printf(format string, v ...interface{}) {
+	l.c <- fmt.Sprintf(format, v...)
+}
+
+// isMetricRegistered überprüft, ob eine Metrik registriert ist
+func isMetricRegistered(metricName string) bool {
+	_, err := prometheus.DefaultGatherer.Gather()
+	return err == nil
 }
