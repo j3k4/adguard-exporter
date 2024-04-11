@@ -1,15 +1,15 @@
 # AdguardHome Prometheus Exporter
 
-![Build/Push (master)](https://github.com/csfreak/adguard-exporter/workflows/Test/Build%20(main)/badge.svg?branch=main)
-[![GoDoc](https://godoc.org/github.com/csfreak/adguard-exporter?status.png)](https://godoc.org/github.com/csfreak/adguard-exporter)
-[![GoReportCard](https://goreportcard.com/badge/github.com/csfreak/adguard-exporter)](https://goreportcard.com/report/github.com/csfreak/adguard-exporter)
-![DockerPulls](https://img.shields.io/docker/pulls/csfreak/adguard-exporter)
+![Build/Push (master)](https://github.com/j3k4/adguard-exporter/workflows/Test/Build%20(main)/badge.svg?branch=main)
+[![GoDoc](https://godoc.org/github.com/j3k4/adguard-exporter?status.png)](https://godoc.org/github.com/j3k4/adguard-exporter)
+[![GoReportCard](https://goreportcard.com/badge/github.com/j3k4/adguard-exporter)](https://goreportcard.com/report/github.com/j3k4/adguard-exporter)
+![DockerPulls](https://img.shields.io/docker/pulls/j3k4/adguard-exporter)
 
 This is a Prometheus exporter for [AdguardHome](https://github.com/AdguardTeam/AdguardHome)'s Raspberry PI ad blocker.
 It is based on the famous pihole-exporter [available here](https://github.com/eko/pihole-exporter/)
 It was forked from ebrianne/adguard-exporter, which is no longer available
 
-![Grafana dashboard](https://raw.githubusercontent.com/csfreak/adguard-exporter/main/grafana/dashboard.png)
+![Grafana dashboard](https://raw.githubusercontent.com/j3k4/adguard-exporter/main/grafana/dashboard.png)
 
 ## Prerequisites
 
@@ -22,31 +22,31 @@ It was forked from ebrianne/adguard-exporter, which is no longer available
 You can download the latest version of the binary built for your architecture here:
 
 * Architecture **i386** [
-[FreeBSD](https://github.com/csfreak/adguard-exporter/releases/latest/download/adguard_exporter-freebsd-386) /
-[Linux](https://github.com/csfreak/adguard-exporter/releases/latest/download/adguard_exporter-linux-386) /
-[Windows](https://github.com/csfreak/adguard-exporter/releases/latest/download/adguard_exporter-windows-386.exe)
+[FreeBSD](https://github.com/j3k4/adguard-exporter/releases/latest/download/adguard_exporter-freebsd-386) /
+[Linux](https://github.com/j3k4/adguard-exporter/releases/latest/download/adguard_exporter-linux-386) /
+[Windows](https://github.com/j3k4/adguard-exporter/releases/latest/download/adguard_exporter-windows-386.exe)
 ]
 * Architecture **amd64** [
-[Darwin](https://github.com/csfreak/adguard-exporter/releases/latest/download/adguard_exporter-darwin-amd64) /
-[FreeBSD](https://github.com/csfreak/adguard-exporter/releases/latest/download/adguard_exporter-freebsd-amd64) /
-[Linux](https://github.com/csfreak/adguard-exporter/releases/latest/download/adguard_exporter-linux-amd64) /
-[Windows](https://github.com/csfreak/adguard-exporter/releases/latest/download/adguard_exporter-windows-amd64.exe)
+[Darwin](https://github.com/j3k4/adguard-exporter/releases/latest/download/adguard_exporter-darwin-amd64) /
+[FreeBSD](https://github.com/j3k4/adguard-exporter/releases/latest/download/adguard_exporter-freebsd-amd64) /
+[Linux](https://github.com/j3k4/adguard-exporter/releases/latest/download/adguard_exporter-linux-amd64) /
+[Windows](https://github.com/j3k4/adguard-exporter/releases/latest/download/adguard_exporter-windows-amd64.exe)
 ]
 * Architecture **arm** [
-[Linux](https://github.com/csfreak/adguard-exporter/releases/latest/download/adguard_exporter-linux-arm)
+[Linux](https://github.com/j3k4/adguard-exporter/releases/latest/download/adguard_exporter-linux-arm)
 ]
 * Architecture **arm64** [
-[Linux](https://github.com/csfreak/adguard-exporter/releases/latest/download/adguard_exporter-linux-arm64) /
-[Darwin](https://github.com/csfreak/adguard-exporter/releases/latest/download/adguard_exporter-darwin-arm64) 
+[Linux](https://github.com/j3k4/adguard-exporter/releases/latest/download/adguard_exporter-linux-arm64) /
+[Darwin](https://github.com/j3k4/adguard-exporter/releases/latest/download/adguard_exporter-darwin-arm64) 
 ]
 
 ### From sources
 
 Optionally, you can download and build it from the sources. You have to retrieve the project sources by using one of the following way:
 ```bash
-$ go get -u github.com/csfreak/adguard-exporter
+$ go get -u github.com/j3k4/adguard-exporter
 # or
-$ git clone https://github.com/csfreak/adguard-exporter.git
+$ git clone https://github.com/j3k4/adguard-exporter.git
 ```
 
 Then, build the binary (here, an example to run on Raspberry PI ARM architecture):
@@ -69,14 +69,14 @@ docker run \
 -e 'log_limit=10000' \
 -e 'server_port=9617' \
 -p 9617:9617 \
-csfreak/adguard-exporter:latest
+j3k4/adguard-exporter:latest
 ```
 
 If you prefer you can use an .env file where the environment variables are defined and using the command:
 
 ```bash
 docker run --env-file=.env -p 9617:9617 \
-csfreak/adguard-exporter:latest
+j3k4/adguard-exporter:latest
 ```
 
 You can also use docker-compose passing the environment file or using secrets locally
@@ -87,7 +87,7 @@ version: "3.7"
 
 services:
   adguard_exporter:
-    image: csfreak/adguard-exporter:latest
+    image: j3k4/adguard-exporter:latest
     restart: always
     ports:
       - "9617:9617"
@@ -105,7 +105,7 @@ secrets:
 
 services:
   adguard_exporter:
-    image: csfreak/adguard-exporter:latest
+    image: j3k4/adguard-exporter:latest
     restart: always
     secrets:
       - my-adguard-pass
@@ -138,7 +138,7 @@ secrets:
 
 services:
   adguard_exporter:
-    image: csfreak/adguard-exporter:latest
+    image: j3k4/adguard-exporter:latest
     restart: always
     secrets:
       - my-adguard-pass
