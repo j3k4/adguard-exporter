@@ -5,7 +5,7 @@ go 1.21
 require (
 	github.com/heetch/confita v0.10.0
 	github.com/mitchellh/mapstructure v1.5.0
-	github.com/prometheus/client_golang v1.19.0
+	github.com/prometheus/client_golang v1.19.1
 	golang.org/x/net v0.24.0
 )
 
